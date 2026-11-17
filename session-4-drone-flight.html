@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Session 4: Drone Flight</title>
+<style>
+:root{--n:#0a1a3a;--n2:#12285a;--o:#ff8a1f;--w:#fff;--m:#b9c4dc}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--n);color:var(--w);font-family:"Segoe UI",system-ui,Arial,sans-serif;overflow:hidden}
+.s{position:absolute;inset:0;padding:5vh 6vw 10vh;display:none;flex-direction:column;justify-content:center;gap:2.5vh;overflow:auto}
+.s.on{display:flex}
+h1{font-size:clamp(2.2rem,7vw,5rem);line-height:1.05}
+h2{font-size:clamp(1.5rem,3.6vw,2.6rem);line-height:1.15}
+h2 em,h1 em{color:var(--o);font-style:normal}
+h3{color:var(--o);font-size:clamp(1rem,1.7vw,1.3rem);margin-bottom:.4vh}
+p,li{font-size:clamp(.9rem,1.7vw,1.25rem);line-height:1.5;color:var(--w)}
+.m{color:var(--m)}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:3vw;align-items:center}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4vw}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2vw}
+.c{background:var(--n2);border:1px solid #ffffff26;border-radius:10px;padding:1.4vh 1.2vw}
+.c p,.c li{font-size:clamp(.8rem,1.4vw,1.05rem)}
+ul{list-style:none;display:grid;gap:1vh}
+li::before{content:"";display:inline-block;width:.6em;height:.6em;background:var(--o);border-radius:50%;margin-right:.6em}
+ul.t li::before{content:"\2713";background:none;color:var(--o);font-weight:700;width:auto;height:auto}
+ul.x li::before{content:"\2715";background:none;color:var(--o);font-weight:700;width:auto;height:auto}
+svg{width:100%;height:auto;max-height:52vh;display:block}
+.o{color:var(--o)}
+a{color:var(--o)}
+.btn{display:inline-block;border:2px solid var(--o);color:var(--o);padding:.8vh 1.4vw;border-radius:8px;text-decoration:none;font-weight:600;font-size:clamp(.85rem,1.5vw,1.1rem);word-break:break-all}
+table{border-collapse:collapse;width:100%}
+td,th{padding:.9vh .8vw;text-align:left;border-bottom:1px solid #ffffff26;font-size:clamp(.8rem,1.5vw,1.1rem)}
+th{color:var(--o)}
+nav{position:fixed;left:0;right:0;bottom:0;height:7vh;min-height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 4vw;background:#06112a}
+nav button{background:none;border:1.5px solid var(--o);color:var(--o);border-radius:8px;padding:.5vh 1.4vw;font-size:1rem;cursor:pointer}
+nav button:hover,nav button:focus-visible{background:var(--o);color:var(--n);outline:none}
+#bar{position:fixed;top:0;left:0;height:4px;background:var(--o);width:0;transition:width .3s}
+@media(max-width:800px){.g,.g3,.g4{grid-template-columns:1fr}svg{max-height:34vh}}
+@media(prefers-reduced-motion:reduce){#bar{transition:none}}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<symbol id="dr" viewBox="0 0 100 100">
+<path d="M22 22L78 78M78 22L22 78" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+<g fill="none" stroke="#ff8a1f" stroke-width="3"><circle cx="20" cy="20" r="15"/><circle cx="80" cy="20" r="15"/><circle cx="20" cy="80" r="15"/><circle cx="80" cy="80" r="15"/></g>
+<rect x="37" y="37" width="26" height="26" rx="7" fill="#fff"/>
+<circle cx="50" cy="50" r="4.5" fill="#0a1a3a"/>
+<polygon points="50,4 43,19 57,19" fill="#ff8a1f"/>
+</symbol>
+<marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#ff8a1f"/></marker>
+</defs>
+</svg>
+
+<!-- 1 Title -->
+<section class="s on" style="text-align:center;align-items:center">
+<svg viewBox="0 0 200 120" style="max-width:300px"><use href="#dr" x="50" y="10" width="100" height="100"/><path d="M10 112H190" stroke="#ff8a1f" stroke-width="2" stroke-dasharray="6 6"/></svg>
+<p class="o" style="font-weight:600">Session 4</p>
+<h1>Drone <em>Flight</em></h1>
+<p class="m">Controls, simulator practice, real flying and the rules</p>
+</section>
+
+<!-- 2 How a drone flies -->
+<section class="s">
+<h2>How a drone <em>flies</em></h2>
+<div class="g">
+<svg viewBox="0 0 300 260">
+<use href="#dr" x="60" y="30" width="180" height="180"/>
+<g fill="#fff" font-size="13" text-anchor="middle"><text x="66" y="24">M1 CW</text><text x="234" y="24">M2 CCW</text><text x="66" y="240">M3 CCW</text><text x="234" y="240">M4 CW</text></g>
+<g fill="none" stroke="#ff8a1f" stroke-width="2.5" marker-end="url(#ah)"><path d="M52 52A22 22 0 1 1 76 66"/><path d="M248 52A22 22 0 1 0 224 66"/><path d="M52 208A22 22 0 1 1 76 194"/><path d="M248 208A22 22 0 1 0 224 194"/></g>
+</svg>
+<ul>
+<li>Four motors spin four propellers</li>
+<li>Neighbouring props spin in opposite directions, so their twisting forces cancel</li>
+<li>All motors faster: the drone climbs</li>
+<li>Some motors faster than others: the drone tilts and moves that way</li>
+<li>The flight controller adjusts motor speeds hundreds of times a second</li>
+</ul>
+</div>
+</section>
+
+<!-- 3 Sticks -->
+<section class="s">
+<h2>Understanding the <em>controls</em></h2>
+<div class="g">
+<svg viewBox="0 0 440 215">
+<rect x="4" y="4" width="432" height="180" rx="40" fill="#12285a" stroke="#fff" stroke-opacity=".3"/>
+<g stroke="#fff" stroke-width="2" fill="none"><circle cx="110" cy="102" r="52"/><circle cx="330" cy="102" r="52"/></g>
+<g stroke="#ff8a1f" stroke-width="2.5" marker-end="url(#ah)" marker-start="url(#ah)"><path d="M110 62V142"/><path d="M70 102H150"/><path d="M330 62V142"/><path d="M290 102H370"/></g>
+<circle cx="110" cy="102" r="9" fill="#ff8a1f"/><circle cx="330" cy="102" r="9" fill="#ff8a1f"/>
+<g fill="#fff" font-size="12" text-anchor="middle"><text x="110" y="28">Throttle up</text><text x="110" y="178">Throttle down</text><text x="330" y="28">Pitch forward</text><text x="330" y="178">Pitch back</text></g>
+<g fill="#fff" font-size="12"><text x="52" y="106" text-anchor="end">Yaw L</text><text x="168" y="106">Yaw R</text><text x="272" y="106" text-anchor="end">Roll L</text><text x="388" y="106">Roll R</text></g>
+<text x="220" y="205" fill="#b9c4dc" font-size="12" text-anchor="middle">Mode 2 layout, the most common</text>
+</svg>
+<ul>
+<li><span class="o">Left stick:</span> throttle (up and down) and yaw (turn left and right)</li>
+<li><span class="o">Right stick:</span> pitch (forward and back) and roll (left and right)</li>
+<li>Throttle does not spring back: it stays where you leave it</li>
+<li>Small, smooth stick movements work best</li>
+</ul>
+</div>
+</section>
+
+<!-- 4 Four motions -->
+<section class="s">
+<h2>Four <em>movements</em></h2>
+<div class="g4">
+<div class="c"><svg viewBox="0 0 120 120"><use href="#dr" x="30" y="50" width="60" height="60"/><path d="M60 44V8" stroke="#ff8a1f" stroke-width="4" marker-end="url(#ah)"/></svg><h3>Throttle</h3><p>Go up or down</p></div>
+<div class="c"><svg viewBox="0 0 120 120"><use href="#dr" x="30" y="30" width="60" height="60"/><path d="M96 30A44 44 0 0 1 100 84" fill="none" stroke="#ff8a1f" stroke-width="4" marker-end="url(#ah)"/></svg><h3>Yaw</h3><p>Rotate left or right on the spot</p></div>
+<div class="c"><svg viewBox="0 0 120 120"><use href="#dr" x="30" y="50" width="60" height="60"/><path d="M60 46V8" stroke="#ff8a1f" stroke-width="4" marker-end="url(#ah)"/><text x="68" y="24" fill="#fff" font-size="11">nose</text></svg><h3>Pitch</h3><p>Move forward or backward</p></div>
+<div class="c"><svg viewBox="0 0 120 120"><use href="#dr" x="30" y="30" width="60" height="60"/><path d="M28 60H4" stroke="#ff8a1f" stroke-width="4" marker-end="url(#ah)"/><path d="M92 60H116" stroke="#ff8a1f" stroke-width="4" marker-end="url(#ah)"/></svg><h3>Roll</h3><p>Slide left or right</p></div>
+</div>
+<p class="m">Tip: until you are confident, keep the drone nose pointing away from you. When it faces you, left and right feel reversed.</p>
+</section>
+
+<!-- 5 Modes and switches -->
+<section class="s">
+<h2>Flight modes and <em>safety switches</em></h2>
+<div class="g3">
+<div class="c"><h3>Arm and disarm</h3><p>Arming starts the motors. Disarm right after landing, never in the air.</p></div>
+<div class="c"><h3>Stabilize or Angle</h3><p>Self-levels when you release the sticks. Good first mode.</p></div>
+<div class="c"><h3>Altitude hold</h3><p>Holds height by itself. Use it while you learn.</p></div>
+<div class="c"><h3>GPS hold or Loiter</h3><p>Holds position in place, even in light wind.</p></div>
+<div class="c"><h3>Return to home</h3><p>Flies back to the take-off point and lands. Set the return height first.</p></div>
+<div class="c"><h3>Failsafe</h3><p>Triggers on signal loss or low battery. Know what your drone will do.</p></div>
+</div>
+</section>
+
+<!-- 6 Simulator -->
+<section class="s">
+<h2>Flying in the <em>simulator</em></h2>
+<div class="g">
+<svg viewBox="0 0 300 220">
+<rect x="20" y="10" width="260" height="150" rx="10" fill="#12285a" stroke="#fff" stroke-width="3"/>
+<path d="M20 120Q90 95 150 118T280 110V160H20Z" fill="#0a1a3a"/>
+<use href="#dr" x="115" y="40" width="70" height="70"/>
+<path d="M150 160V185M110 185H190" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+<rect x="70" y="195" width="160" height="18" rx="9" fill="#ff8a1f"/>
+</svg>
+<div style="display:grid;gap:2vh">
+<p>Free online simulator for this session:</p>
+<a class="btn" href="https://aasmaaerospace.in/drone-simulator-online-free/" target="_blank" rel="noopener">aasmaaerospace.in/drone-simulator-online-free</a>
+<ul class="t">
+<li>Open the link in a desktop browser</li>
+<li>Choose keyboard or a connected controller</li>
+<li>Take off, hover, land. Then repeat</li>
+<li>Crashing is free here, so experiment</li>
+</ul>
+</div>
+</div>
+<div class="c"><h3>Practice drills</h3><p>1. Hover at 2 m for 30 seconds &nbsp; 2. Fly a square &nbsp; 3. Figure of eight &nbsp; 4. Land on a marked spot</p></div>
+</section>
+
+<!-- 7 Other simulators -->
+<section class="s">
+<h2>Other <em>simulators</em></h2>
+<div class="g">
+<div class="c"><h3>Simple and hobby</h3><ul>
+<li>Aasma Aerospace online simulator</li>
+<li>Liftoff</li>
+<li>VelociDrone</li>
+<li>Uncrashed</li>
+<li>Drone Racing League Simulator</li></ul></div>
+<div class="c"><h3>Industrial and professional</h3><ul>
+<li>DJI Flight Simulator</li>
+<li>Zephyr Drone Simulator</li>
+<li>Mission Planner or QGroundControl with SITL</li>
+<li>Gazebo with PX4 or ArduPilot</li>
+<li>Microsoft AirSim</li></ul></div>
+</div>
+<svg viewBox="0 0 600 70" style="max-height:12vh"><g fill="none" stroke="#ff8a1f" stroke-width="3"><path d="M20 55H580"/></g><g fill="#fff" font-size="14" text-anchor="middle"><circle cx="60" cy="55" r="7" fill="#ff8a1f"/><text x="60" y="30">Beginner</text><circle cx="300" cy="55" r="7" fill="#ff8a1f"/><text x="300" y="30">Racing and FPV</text><circle cx="540" cy="55" r="7" fill="#ff8a1f"/><text x="540" y="30">Engineering and research</text></g></svg>
+</section>
+
+<!-- 8 Real life pre-flight -->
+<section class="s">
+<h2>Real life: <em>before take-off</em></h2>
+<div class="g">
+<svg viewBox="0 0 320 260">
+<use href="#dr" x="90" y="60" width="140" height="140"/>
+<g stroke="#ff8a1f" stroke-width="2"><path d="M30 40L98 80M290 40L222 80M30 220L98 180M290 220L222 180"/></g>
+<g fill="#fff" font-size="13"><text x="4" y="32">Props</text><text x="262" y="32">GPS</text><text x="4" y="240">Battery</text><text x="250" y="240">Camera</text></g>
+</svg>
+<ul class="t">
+<li>Battery for drone and transmitter fully charged</li>
+<li>Propellers tight, undamaged, on the right motors</li>
+<li>Compass and GPS lock confirmed</li>
+<li>Open area, light wind, no rain, no people close by</li>
+<li>Permission checked on Digital Sky</li>
+<li>Return height set above nearby obstacles</li>
+</ul>
+</div>
+</section>
+
+<!-- 9 Real life flight -->
+<section class="s">
+<h2>Real life: <em>the flight</em></h2>
+<svg viewBox="0 0 700 190" style="max-height:30vh">
+<path d="M20 165H680" stroke="#fff" stroke-width="2" stroke-opacity=".5"/>
+<path d="M80 165V110H250C320 110 330 50 400 50H520C580 50 600 110 620 165" fill="none" stroke="#ff8a1f" stroke-width="3" stroke-dasharray="8 6"/>
+<g fill="#ff8a1f"><circle cx="80" cy="165" r="6"/><circle cx="80" cy="110" r="6"/><circle cx="400" cy="50" r="6"/><circle cx="620" cy="165" r="6"/></g>
+<g fill="#fff" font-size="14"><text x="40" y="185">Take-off</text><text x="96" y="104">Hover and check</text><text x="410" y="40">Fly in sight</text><text x="590" y="185">Land</text></g>
+</svg>
+<div class="g">
+<div class="c"><h3>Flow</h3><ul><li>Arm, lift to about 2 m, hover and test controls</li><li>Fly slowly, keep the drone in sight</li><li>Return with spare battery, land, disarm</li></ul></div>
+<div class="c"><h3>If something goes wrong</h3><ul><li>Low battery: land at once</li><li>Signal lost: let return to home work, do not panic</li><li>Out of control: lower throttle, keep people away</li></ul></div>
+</div>
+</section>
+
+<!-- 10 DGCA -->
+<section class="s">
+<h2>Rules in India: <em>DGCA</em></h2>
+<div class="g">
+<div>
+<table>
+<tr><th>Category</th><th>Max take-off weight</th></tr>
+<tr><td>Nano</td><td>up to 250 g</td></tr>
+<tr><td>Micro</td><td>250 g to 2 kg</td></tr>
+<tr><td>Small</td><td>2 kg to 25 kg</td></tr>
+<tr><td>Medium</td><td>25 kg to 150 kg</td></tr>
+<tr><td>Large</td><td>above 150 kg</td></tr>
+</table>
+<p class="m" style="margin-top:1vh">Based on the Drone Rules, 2021 and later amendments. Small and above need registration and a remote pilot certificate. Always check the current rules on the Digital Sky platform.</p>
+</div>
+<div>
+<svg viewBox="0 0 300 260">
+<circle cx="150" cy="130" r="120" fill="#1c3f2e" stroke="#fff" stroke-opacity=".4"/>
+<circle cx="150" cy="130" r="82" fill="#8a5a12" stroke="#fff" stroke-opacity=".4"/>
+<circle cx="150" cy="130" r="40" fill="#a3330f" stroke="#fff" stroke-opacity=".4"/>
+<path d="M130 130H170M150 112V148" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+<g fill="#fff" font-size="13" text-anchor="middle"><text x="150" y="190">Yellow: permission</text><text x="150" y="238">Green: open, up to 400 ft</text><text x="150" y="102">Red: no fly</text></g>
+</svg>
+<p class="m">Airport at the centre. Zones are shown on the Digital Sky map.</p>
+</div>
+</div>
+</section>
+
+<!-- 11 Dos and Don'ts -->
+<section class="s">
+<h2>Safe flying <em>guidelines</em></h2>
+<div class="g">
+<div class="c"><h3>Do</h3><ul class="t">
+<li>Keep the drone in visual line of sight</li>
+<li>Stay below 400 ft (120 m) in green zones</li>
+<li>Register and get your UIN where required</li>
+<li>Fly in daylight and good weather</li>
+<li>Respect privacy and local rules</li></ul></div>
+<div class="c"><h3>Do not</h3><ul class="x">
+<li>Fly near airports, borders or military sites</li>
+<li>Fly over crowds, roads or people</li>
+<li>Fly at night without permission</li>
+<li>Carry or drop hazardous items</li>
+<li>Fly after drinking or when tired</li></ul></div>
+</div>
+</section>
+
+<!-- 12 Thank you -->
+<section class="s" style="text-align:center;align-items:center">
+<svg viewBox="0 0 200 120" style="max-width:260px"><use href="#dr" x="50" y="10" width="100" height="100"/><path d="M10 112H190" stroke="#ff8a1f" stroke-width="2" stroke-dasharray="6 6"/></svg>
+<h1>Thank <em>you</em></h1>
+<p class="m">Fly safe. Fly smart. Questions?</p>
+</section>
+
+<nav><button id="p" aria-label="Previous slide">Prev</button><span id="c" class="m"></span><button id="x" aria-label="Next slide">Next</button></nav>
+
+<script>
+const S=[...document.querySelectorAll(".s")];let i=0;
+const c=document.getElementById("c"),bar=document.getElementById("bar");
+function go(n){i=Math.max(0,Math.min(S.length-1,n));S.forEach((s,k)=>s.classList.toggle("on",k===i));c.textContent=(i+1)+" / "+S.length;bar.style.width=((i+1)/S.length*100)+"%"}
+document.getElementById("p").onclick=()=>go(i-1);
+document.getElementById("x").onclick=()=>go(i+1);
+document.addEventListener("keydown",e=>{if(["ArrowRight"," ","PageDown"].includes(e.key))go(i+1);if(["ArrowLeft","PageUp"].includes(e.key))go(i-1);if(e.key==="Home")go(0);if(e.key==="End")go(S.length-1)});
+let t0=0;document.addEventListener("touchstart",e=>t0=e.touches[0].clientX);
+document.addEventListener("touchend",e=>{const d=e.changedTouches[0].clientX-t0;if(Math.abs(d)>60)go(i+(d<0?1:-1))});
+go(0);
+</script>
+</body>
+</html>
