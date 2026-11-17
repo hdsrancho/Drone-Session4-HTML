@@ -37,7 +37,17 @@ nav button{background:none;border:1.5px solid var(--o);color:var(--o);border-rad
 nav button:hover,nav button:focus-visible{background:var(--o);color:var(--n);outline:none}
 #bar{position:fixed;top:0;left:0;height:4px;background:var(--o);width:0;transition:width .3s}
 @media(max-width:800px){.g,.g3,.g4{grid-template-columns:1fr}svg{max-height:34vh}}
-@media(prefers-reduced-motion:reduce){#bar{transition:none}}
+.a{transform-box:fill-box;transform-origin:center;animation-duration:3s;animation-timing-function:ease-in-out;animation-iteration-count:infinite}
+.th{animation-name:th}.yw{animation-name:yw}.pt{animation-name:pt}.rl{animation-name:rl}
+.k{animation-name:kv}.kh{animation-name:kh}
+@keyframes th{0%,100%{transform:translateY(20px) scale(.8)}50%{transform:translateY(-16px) scale(1.12)}}
+@keyframes yw{0%,100%{transform:rotate(-50deg)}50%{transform:rotate(50deg)}}
+@keyframes pt{0%,100%{transform:translateY(18px)}50%{transform:translateY(-18px)}}
+@keyframes rl{0%,100%{transform:translateX(-22px)}50%{transform:translateX(22px)}}
+@keyframes kv{0%,100%{transform:translateY(8px)}50%{transform:translateY(-8px)}}
+@keyframes kh{0%,100%{transform:translateX(-8px)}50%{transform:translateX(8px)}}
+.g4 svg{max-height:30vh}
+@media(prefers-reduced-motion:reduce){#bar{transition:none}.a{animation:none}}
 </style>
 </head>
 <body>
@@ -109,12 +119,12 @@ nav button:hover,nav button:focus-visible{background:var(--o);color:var(--n);out
 <section class="s">
 <h2>Four <em>movements</em></h2>
 <div class="g4">
-<div class="c"><svg viewBox="0 0 120 120"><use href="#dr" x="30" y="50" width="60" height="60"/><path d="M60 44V8" stroke="#ff8a1f" stroke-width="4" marker-end="url(#ah)"/></svg><h3>Throttle</h3><p>Go up or down</p></div>
-<div class="c"><svg viewBox="0 0 120 120"><use href="#dr" x="30" y="30" width="60" height="60"/><path d="M96 30A44 44 0 0 1 100 84" fill="none" stroke="#ff8a1f" stroke-width="4" marker-end="url(#ah)"/></svg><h3>Yaw</h3><p>Rotate left or right on the spot</p></div>
-<div class="c"><svg viewBox="0 0 120 120"><use href="#dr" x="30" y="50" width="60" height="60"/><path d="M60 46V8" stroke="#ff8a1f" stroke-width="4" marker-end="url(#ah)"/><text x="68" y="24" fill="#fff" font-size="11">nose</text></svg><h3>Pitch</h3><p>Move forward or backward</p></div>
-<div class="c"><svg viewBox="0 0 120 120"><use href="#dr" x="30" y="30" width="60" height="60"/><path d="M28 60H4" stroke="#ff8a1f" stroke-width="4" marker-end="url(#ah)"/><path d="M92 60H116" stroke="#ff8a1f" stroke-width="4" marker-end="url(#ah)"/></svg><h3>Roll</h3><p>Slide left or right</p></div>
+<div class="c"><svg viewBox="0 0 120 150"><path d="M110 20V96" stroke="#ff8a1f" stroke-width="3" stroke-dasharray="4 4" marker-start="url(#ah)" marker-end="url(#ah)"/><g class="a th"><use href="#dr" x="30" y="28" width="60" height="60"/></g><circle cx="60" cy="128" r="16" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="2"/><circle class="a k" cx="60" cy="128" r="5" fill="#ff8a1f"/></svg><h3>Throttle</h3><p>Go up or down</p></div>
+<div class="c"><svg viewBox="0 0 120 150"><circle cx="60" cy="58" r="46" fill="none" stroke="#ff8a1f" stroke-width="2" stroke-dasharray="4 5" opacity=".6"/><g class="a yw"><use href="#dr" x="30" y="28" width="60" height="60"/></g><circle cx="60" cy="128" r="16" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="2"/><circle class="a kh" cx="60" cy="128" r="5" fill="#ff8a1f"/></svg><h3>Yaw</h3><p>Rotate left or right on the spot</p></div>
+<div class="c"><svg viewBox="0 0 120 150"><path d="M110 20V96" stroke="#ff8a1f" stroke-width="3" stroke-dasharray="4 4" marker-start="url(#ah)" marker-end="url(#ah)"/><g class="a pt"><use href="#dr" x="30" y="28" width="60" height="60"/></g><circle cx="60" cy="128" r="16" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="2"/><circle class="a k" cx="60" cy="128" r="5" fill="#ff8a1f"/></svg><h3>Pitch</h3><p>Move forward or backward</p></div>
+<div class="c"><svg viewBox="0 0 120 150"><path d="M8 106H112" stroke="#ff8a1f" stroke-width="3" stroke-dasharray="4 4" marker-start="url(#ah)" marker-end="url(#ah)"/><g class="a rl"><use href="#dr" x="30" y="28" width="60" height="60"/></g><circle cx="60" cy="128" r="16" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="2"/><circle class="a kh" cx="60" cy="128" r="5" fill="#ff8a1f"/></svg><h3>Roll</h3><p>Slide left or right</p></div>
 </div>
-<p class="m">Tip: until you are confident, keep the drone nose pointing away from you. When it faces you, left and right feel reversed.</p>
+<p class="m">The small dot under each drone shows the matching stick movement. Tip: until you are confident, keep the drone nose pointing away from you. When it faces you, left and right feel reversed.</p>
 </section>
 
 <!-- 5 Modes and switches -->
